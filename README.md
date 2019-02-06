@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/Che931/ir_profile_tracker_travis.svg?token=us9R1xALK8y5F4oysxeA&branch=master)](https://travis-ci.com/Che931/ir_profile_tracker_travis)
+[![Build Status](https://travis-ci.com/Che931/ir_profile_tracker.svg?branch=master)](https://travis-ci.com/Che931/ir_profile_tracker)
 # IR-Profile-Tracker
 
 This python script makes your life easier because you will get an updated SR/irating file of your teammates.
