@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.com/Che931/ir_profile_tracker.svg?branch=master)](https://travis-ci.com/Che931/ir_profile_tracker)
+[![Maintainability](https://api.codeclimate.com/v1/badges/72db40f438c835176f06/maintainability)](https://codeclimate.com/github/Che931/ir_profile_tracker/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/72db40f438c835176f06/test_coverage)](https://codeclimate.com/github/Che931/ir_profile_tracker/test_coverage)
 
 # IR-Profile-Tracker
 
