@@ -9,10 +9,10 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install -r requirements-test.txt
-  - pip install coveralls
+  - pip install codeclimate-test-reporter
 
 script:
   - nosetests -v --with-coverage --cover-package=ir_profile_tracker --cover-package=main
 
 after_success:
-  - coveralls
+  - codeclimate-test-reporter

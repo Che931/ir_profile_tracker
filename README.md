@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.com/Che931/ir_profile_tracker.svg?branch=master)](https://travis-ci.com/Che931/ir_profile_tracker)
-[![Coverage Status](https://coveralls.io/repos/github/Che931/ir_profile_tracker/badge.svg?branch=master)](https://coveralls.io/github/Che931/ir_profile_tracker?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/72db40f438c835176f06/maintainability)](https://codeclimate.com/github/Che931/ir_profile_tracker/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/72db40f438c835176f06/test_coverage)](https://codeclimate.com/github/Che931/ir_profile_tracker/test_coverage)
+
 # IR-Profile-Tracker
 
 This python script makes your life easier because you will get an updated SR/irating file of your teammates.
