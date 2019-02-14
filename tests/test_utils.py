@@ -53,7 +53,7 @@ class TestExportCSV(TestCase):
         mock_dt.utcnow.return_value = today
 
         utils.drivers_to_csv([self.member])
-        date_call_args = self.get_write_calls_arg(mock_open.mock_calls, 2)
+        date_call_args = self.get_write_calls_arg(mock_open.mock_calls, 3)
         assert_equal(date_call_args[0], "Created: " + today.strftime("%d-%b-%Y %H:%M:%S UTC"))
 
     @mock.patch("builtins.open")
