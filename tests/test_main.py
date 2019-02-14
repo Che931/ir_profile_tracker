@@ -1,23 +1,61 @@
+import argparse
 from unittest import TestCase
 from unittest import mock
-from nose.tools import assert_equal, assert_raises, assert_true
-from ir_profile_tracker.models import Member
+from nose.tools import assert_equal, assert_raises, assert_true, assert_list_equal
+from ir_profile_tracker.models import Member, RaceType
 import main
 
 
 class TestArgumentParser(TestCase):
 
+    def setUp(self):
+        self.inputfile = "file.json"
+        self.params = ["-f", self.inputfile]
+
     def test_parse_file_arg(self):
-        parse = main.parse_args(["-f", "file.json"])
-        assert_equal(parse.file, "file.json")
+        parser = main.parse_args(self.params)
+        assert_equal(parser.file, self.inputfile)
 
     def test_parse_output_arg(self):
-        parse = main.parse_args(["-f", "file.json", '--output', 'drivers.csv'])
-        assert_equal(parse.output, "drivers.csv")
+        outfile = 'drivers.csv'
+        self.params += ['--output', outfile]
+
+        parser = main.parse_args(self.params)
+        assert_equal(parser.output, outfile)
 
     def test_parse_zero_args_raise_exception(self):
         with assert_raises(SystemExit):
             main.parse_args([])
+
+    def test_ignore_licence_raise_exception(self):
+        with assert_raises(SystemExit):
+            with assert_raises(argparse.ArgumentError):
+                self.params += ['--ignore', '0']
+                main.parse_args(self.params)
+
+    def test_ignore_oval_licence(self):
+        licence = RaceType.Oval.value
+        self.params += ['--ignore', str(licence)]
+
+        parser = main.parse_args(self.params)
+        ignore_list = parser.ignore
+
+        assert_true(licence in ignore_list)
+        assert_equal(len(ignore_list), 1)
+
+    def test_ignore_dirt_licences(self):
+        self.params += ['--ignore', str(RaceType.Dirt_Oval.value), str(RaceType.Dirt_Road.value)]
+
+        parser = main.parse_args(self.params)
+        ignore_list = parser.ignore
+
+        assert_list_equal([RaceType.Dirt_Oval.value, RaceType.Dirt_Road.value], ignore_list)
+        assert_equal(len(ignore_list), 2)
+
+    def test_ignore_licence_empty_values(self):
+        self.params += ['--ignore']
+        parser = main.parse_args(self.params)
+        assert_equal([], parser.ignore)
 
 
 class TestMain(TestCase):
@@ -50,8 +88,8 @@ class TestMain(TestCase):
         assert_true(self.client_instance.login.called)
 
         mock_parse_drivers.assert_called_once_with(filename)
-        mock_update_drivers.assert_called_once_with([self.member], self.client_instance)
-        mock_csv.assert_called_once_with([self.member], None)
+        mock_update_drivers.assert_called_once_with([self.member], self.client_instance, None)
+        mock_csv.assert_called_once_with([self.member], None, None)
 
     @mock.patch('main.os.path.exists')
     @mock.patch('main.parse_drivers')
@@ -70,5 +108,5 @@ class TestMain(TestCase):
         main.main(["-f", filename, '-o', output])
 
         assert_true(mock_update_drivers.called)
-        mock_csv.assert_called_once_with([self.member], output)
-        mock_update_drivers.assert_called_once_with([self.member], self.client_instance)
+        mock_csv.assert_called_once_with([self.member], output, None)
+        mock_update_drivers.assert_called_once_with([self.member], self.client_instance, None)

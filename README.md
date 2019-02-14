@@ -5,8 +5,9 @@
 # IR-Profile-Tracker
 
 This python script makes your life easier because you will get an updated SR/irating file of your teammates.
-You won't need to waste time visiting all profiles and updating a document. At this moment SR and iRating info is exported 
-to a CSV file but other formats should be available #soon.
+You won't need to waste time visiting all profiles and updating a document. SR and iRating info is exported to a CSV
+file. 
+
 
 ## Usage
 
@@ -84,21 +85,18 @@ my code
 
 2. Have you used it?
 
-> I've tested it and a modified version of this script is running on my Raspberry Pi every morning. 
+> It's running on my Raspberry Pi every morning. 
 
 3. Where can I find the customerid from my mate?
 
 > If visit his profile, his id is at the end of the url after ?custid= .
 
-4. I only care about <insert road/oval/dirt licence here>
-> At this moment all licences are exported but in the future you might be able to filter those you don't care. 
-
-5. I would love having the csv file on my Dropbox/GDrive folder or Discord channel automatically.
+4. I would love having the csv file on my Dropbox/GDrive folder or Discord channel automatically.
    
-> Sync feature is on my TODO list and #soon. Discord and Dropbox could be the first services supported.
+> I won't add sync to this script but I might write a small one so the file would be on Discord or/and Dropbox.
 
-6. Can I modify/copy it?
-> Of course!. It's under MIT Licence so feel free to do whatever you want. If you make an awesome feature, you can create a
+5. Can I modify/copy it?
+> Of course!. It's under MIT Licence so feel free to do whatever you want. If you make an awesome feature you can create a
 PR.
 
 

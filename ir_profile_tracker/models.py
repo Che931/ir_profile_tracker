@@ -118,6 +118,18 @@ class Member(object):
         else:
             raise ValueError("{0} is not a valid irating".format(irating))
 
+    def irating_as_dict(self):
+        """
+        :return: A dict with the following structure: {Racetype: irating}
+        """
+        return self._irating.copy()
+
+    def sr_as_dict(self):
+        """
+        :return: A dict with the following structure: {Racetype: SR object}
+        """
+        return self._sr.copy()
+
     @property
     def road_irating(self):
         return self._irating[RaceType.Road]

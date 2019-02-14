@@ -2,15 +2,22 @@ from unittest import TestCase
 from unittest import mock
 import json
 from datetime import datetime
-from nose.tools import assert_equal, assert_raises, assert_list_equal, assert_true
+from nose.tools import assert_equal, assert_raises, assert_list_equal
 from ir_profile_tracker import utils
-from ir_profile_tracker.models import Member
+from ir_profile_tracker.models import Member,RaceType
 
 
 class TestExportCSV(TestCase):
 
     def setUp(self):
         self.member = Member(name="John Doe", custid=2020)
+        ir = [1000, 2500, 3850, 6200]
+        sr = [2342, 4365, 5499, 2128]
+
+        for rt in RaceType:
+            self.member.update_sr(rt, sr[rt.value-1])
+            self.member.update_irating(rt, ir[rt.value-1])
+
 
     def get_write_calls_arg(self, mock_calls, index):
         """
@@ -28,10 +35,9 @@ class TestExportCSV(TestCase):
 
     @mock.patch("builtins.open")
     def test_drivers_to_csv_member_info(self, mock_open):
-        driver_expected_args = [self.member.name, self.member.custid, self.member.road_irating,
-                                self.member.oval_irating, self.member.dRoad_irating, self.member.dOval_irating,
-                                self.member.road_sr, self.member.oval_sr, self.member.dRoad_sr,
-                                self.member.dOval_sr, self.member.profile_url]
+        driver_expected_args = [self.member.name, self.member.custid, self.member.oval_irating, self.member.road_irating,
+                                self.member.dOval_irating, self.member.dRoad_irating, self.member.oval_sr,
+                                self.member.road_sr, self.member.dOval_sr, self.member.dRoad_sr, self.member.profile_url]
 
         utils.drivers_to_csv([self.member])
 
@@ -47,7 +53,7 @@ class TestExportCSV(TestCase):
         mock_dt.utcnow.return_value = today
 
         utils.drivers_to_csv([self.member])
-        date_call_args = self.get_write_calls_arg(mock_open.mock_calls, 3)
+        date_call_args = self.get_write_calls_arg(mock_open.mock_calls, 2)
         assert_equal(date_call_args[0], "Created: " + today.strftime("%d-%b-%Y %H:%M:%S UTC"))
 
     @mock.patch("builtins.open")
@@ -55,8 +61,8 @@ class TestExportCSV(TestCase):
         utils.drivers_to_csv([self.member])
 
         headers_call_args = self.get_write_calls_arg(mock_open.mock_calls, 0)
-        headers_expected = ['Name', 'Id', 'ir-Road', 'ir-Oval', 'ir-DRoad', 'ir-DOval', 'sr-Road', 'sr-Oval',
-                            'sr-DRoad', 'sr-DOval', 'Profile']
+        headers_expected = ['Name', 'Id', 'ir_Oval', 'ir_Road', 'ir_Dirt_Oval', 'ir_Dirt_Road', 'sr_Oval', 'sr_Road',
+                            'sr_Dirt_Oval', 'sr_Dirt_Road', 'Profile']
 
         assert_list_equal(headers_call_args, headers_expected)
 
@@ -74,11 +80,25 @@ class TestExportCSV(TestCase):
         with assert_raises(IOError):
             utils.drivers_to_csv([self.member], filename)
 
+    @mock.patch("builtins.open")
+    def test_drivers_to_csv_dirt_licences_ignored(self, mock_open):
+        utils.drivers_to_csv([self.member], ignore_licences=[3, 4])
+
+        headers_expected = ['Name', 'Id', 'ir_Oval', 'ir_Road', 'sr_Oval', 'sr_Road', 'Profile']
+        headers_call_args = self.get_write_calls_arg(mock_open.mock_calls, 0)
+        driver_call_args = self.get_write_calls_arg(mock_open.mock_calls, 1)
+
+        driver_expected_info = [self.member.name, self.member.custid, self.member.oval_irating, self.member.road_irating,
+                                self.member.oval_sr, self.member.road_sr, self.member.profile_url]
+
+        assert_list_equal(headers_call_args, headers_expected)
+        assert_list_equal(driver_call_args, [str(item) for item in driver_expected_info])
+
 
 class TestUtils(TestCase):
 
     @mock.patch('ir_profile_tracker.utils.time.sleep', return_value=None)
-    def test_update_drivers(self, mock_time):
+    def test_update_drivers_all_licences(self, mock_time):
         member = Member(name="John Doe", custid=2020)
         client = mock.Mock()
         ir_list = [1000, 1500, 3000, 2500]
@@ -96,6 +116,24 @@ class TestUtils(TestCase):
 
         assert_list_equal(ir_list, [member.oval_irating, member.road_irating,
                                     member.dOval_irating, member.dRoad_irating])
+
+    @mock.patch('ir_profile_tracker.utils.time.sleep', return_value=None)
+    def test_update_drivers_ignore_oval_licence(self, mock_time):
+        member = Member(name="John Doe", custid=2020)
+        client = mock.Mock()
+        ir_list = [1000, 1500, 3000, 2500]
+        sr_list = [2342, 4365, 5499, 2128]
+
+        client.get_irating.side_effect = ir_list
+        client.get_SR.side_effect = sr_list
+
+        utils.update_drivers_stats([member], client, [1])
+
+        assert_equal(member.oval_irating, 0)
+        assert_list_equal(ir_list[0:3], [member.road_irating, member.dOval_irating, member.dRoad_irating])
+
+        assert_list_equal(sr_list[0:3], [member.road_sr.licence_as_number, member.dOval_sr.licence_as_number,
+                                         member.dRoad_sr.licence_as_number])
 
     @mock.patch("builtins.open", mock.mock_open(read_data=json.dumps({"drivers": [{"name": "John Doe", "id": 2020}]})))
     def test_parse_drivers(self):

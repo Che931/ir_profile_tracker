@@ -41,7 +41,6 @@ class TestiRClient(TestCase):
             with assert_raises(Exception):
                 self.client.login('joe@example.com', 'password')
 
-
     def test_get_SR_chart(self):
         with patch.object(self.client, 'session') as session:
 
