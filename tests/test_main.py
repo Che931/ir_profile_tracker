@@ -88,8 +88,8 @@ class TestMain(TestCase):
         assert_true(self.client_instance.login.called)
 
         mock_parse_drivers.assert_called_once_with(filename)
-        mock_update_drivers.assert_called_once_with([self.member], self.client_instance, None)
-        mock_csv.assert_called_once_with([self.member], None, None)
+        mock_update_drivers.assert_called_once_with([self.member], self.client_instance, [])
+        mock_csv.assert_called_once_with([self.member], None, [])
 
     @mock.patch('main.os.path.exists')
     @mock.patch('main.parse_drivers')
@@ -108,5 +108,5 @@ class TestMain(TestCase):
         main.main(["-f", filename, '-o', output])
 
         assert_true(mock_update_drivers.called)
-        mock_csv.assert_called_once_with([self.member], output, None)
-        mock_update_drivers.assert_called_once_with([self.member], self.client_instance, None)
+        mock_csv.assert_called_once_with([self.member], output, [])
+        mock_update_drivers.assert_called_once_with([self.member], self.client_instance, [])

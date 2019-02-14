@@ -32,7 +32,7 @@ def parse_args(args):
 def main(args):
     parser = parse_args(args)
     file = parser.file
-    ignore_list = parser.ignore
+    ignore_list = parser.ignore or []
 
     if os.path.exists(file):
         drivers = parse_drivers(file)
