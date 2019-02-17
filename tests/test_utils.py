@@ -18,7 +18,6 @@ class TestExportCSV(TestCase):
             self.member.update_sr(rt, sr[rt.value-1])
             self.member.update_irating(rt, ir[rt.value-1])
 
-
     def get_write_calls_arg(self, mock_calls, index):
         """
         Bypass to get all args from every write call when csv file is being writed. I tried all assert methods from mock
