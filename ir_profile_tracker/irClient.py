@@ -46,7 +46,7 @@ class IrClient(object):
 
     def get_irating(self, memberid, racetype=RaceType.Oval):
         """
-        Gets irtaing from a member
+        Gets irating from a member
         :param memberid: iracing customer id
         :param racetype: Licence
         :return: irating value; None if there was an error

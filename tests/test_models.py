@@ -1,5 +1,5 @@
 from unittest import TestCase
-from nose.tools import assert_equal, assert_raises
+from nose.tools import assert_equal, assert_raises, assert_list_equal
 from ir_profile_tracker.models import Member, SR, RaceType
 
 
@@ -92,3 +92,21 @@ class TestMember(TestCase):
         self.member.update_sr(RaceType.Dirt_Oval, value)
         assert_equal(self.member.dOval_sr.number, 3.50)
         assert_equal(self.member.dOval_sr.licence_class, 'PRO_WC')
+
+    def test_irating_as_dict(self):
+        ir_expected = [1000, 2500, 3850, 6200]
+
+        for item in range(0, 4):
+            self.member.update_irating(RaceType(item+1), ir_expected[item])
+
+        values = [item for item in self.member.irating_as_dict().values()]
+        assert_list_equal(ir_expected, values)
+
+    def test_sr_as_dict(self):
+        sr_expected = [2342, 4365, 5499, 2128]
+
+        for item in range(0, 4):
+            self.member.update_sr(RaceType(item+1), sr_expected[item])
+
+        values = [item.licence_as_number for item in self.member.sr_as_dict().values()]
+        assert_list_equal(sr_expected, values)

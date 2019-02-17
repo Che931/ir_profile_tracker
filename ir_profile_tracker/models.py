@@ -1,4 +1,5 @@
 from enum import Enum
+from collections import OrderedDict
 
 
 class Licence(Enum):
@@ -91,8 +92,8 @@ class Member(object):
         self.custid = custid
         self.name = name
 
-        self._sr = {key: SR() for key in RaceType}
-        self._irating = {key: 0 for key in RaceType}
+        self._sr = OrderedDict((key, SR()) for key in RaceType)
+        self._irating = OrderedDict((key, 0) for key in RaceType)
 
     def __str__(self):
         return "{0} - {1}".format(self.name, self.custid)
@@ -117,6 +118,18 @@ class Member(object):
             self._irating[racetype] = irating
         else:
             raise ValueError("{0} is not a valid irating".format(irating))
+
+    def irating_as_dict(self):
+        """
+        :return: A dict with the following structure: {Racetype: irating}
+        """
+        return self._irating.copy()
+
+    def sr_as_dict(self):
+        """
+        :return: A dict with the following structure: {Racetype: SR object}
+        """
+        return self._sr.copy()
 
     @property
     def road_irating(self):
