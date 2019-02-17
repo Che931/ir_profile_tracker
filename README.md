@@ -121,31 +121,24 @@ $ main.py -f files/drivers.json -o output/stats.csv --ignore 2
 
 1. Do I have to put my iRacing credentials?
 
-```
-Yes. iRacing doesn't have any API so the only valid method is using your account. It's fair you don't trust me but you can check my code.
-```
+>Yes. iRacing doesn't have any API so the only valid method is using your account. It's fair you don't trust me but you can check my code.
 
 2. Have you used it?
-```
-It's running on my Raspberry Pi every morning. 
-```
+
+>It's running on my Raspberry Pi every morning. 
 
 3. Where can I find the customerid?
 
-```
-If visit your mate's profile, his id is at the end of the url after ?custid=.
-```
+>If visit your mate's profile, his id is at the end of the url after ?custid=.
 
 4. I would love having the csv file on my Dropbox/GDrive folder or Discord channel automatically.
 
-``` 
-I won't add sync to this script but I might write a small script for Dropbox/Discord.
-```
+> I won't add sync to this script but I might write a small script for Dropbox/Discord.
 
 5. Can I modify/copy it?
-```
-Of course!. It's under MIT Licence so feel free to do whatever you want. If you make an awesome feature you can create a PR.
-```
+
+> Of course!. It's under MIT Licence so feel free to do whatever you want. If you make an awesome feature you can create a PR.
+
 
 ## Changelog
 
