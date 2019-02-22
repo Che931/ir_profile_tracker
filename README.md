@@ -133,7 +133,7 @@ $ main.py -f files/drivers.json -o output/stats.csv --ignore 2
 
 4. I would love having the csv file on my Dropbox/GDrive folder or Discord channel automatically.
 
-> I won't add sync to this script but I might write a small script for Dropbox/Discord.
+> In the [wiki section](https://github.com/Che931/ir_profile_tracker/wiki) you will find a guide to upload it to Dropbox.
 
 5. Can I modify/copy it?
 
