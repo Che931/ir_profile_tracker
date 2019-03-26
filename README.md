@@ -78,7 +78,7 @@ It's a required flag so if you miss it you will get an error. In order to keep t
 ### -o/ --output
 ```
 $ main.py -o stats.csv 
-$ main.py --file /output/stats.csv
+$ main.py --output /output/stats.csv
 ```
 
 By default stats are exported to a csv file named DriversStats.csv and you find it in the project root. With this flag,
